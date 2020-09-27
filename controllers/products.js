@@ -1,3 +1,4 @@
+ErrorResponse = require('../utils/ErrorResponse');
 const Product = require('../models/Product.js');
 
 // @desc    Get all products
@@ -11,8 +12,8 @@ exports.getProducts = async (req, res, next) => {
       count: products.length,
       data: products,
     });
-  } catch (error) {
-    res.status(400).json({ success: false });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -23,14 +24,16 @@ exports.getProduct = async (req, res, next) => {
   try {
     const product = await Product.findById(req.params.id);
     if (!product) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Product not found with id of ${req.params.id}`, 404)
+      );
     }
     res.status(200).json({
       success: true,
       data: product,
     });
-  } catch (error) {
-    res.status(400).json({ success: false });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -45,10 +48,8 @@ exports.createProduct = async (req, res, next) => {
       success: true,
       data: product,
     });
-  } catch (error) {
-    res.status(400).json({
-      success: false,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -63,14 +64,16 @@ exports.updateProduct = async (req, res, next) => {
     });
 
     if (!product) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
+      );
     }
     res.status(200).json({
       success: true,
       data: product,
     });
-  } catch (error) {
-    res.status(400).json({ success: false });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -82,13 +85,15 @@ exports.deleteProduct = async (req, res, next) => {
     const product = await Product.findByIdAndDelete(req.params.id);
 
     if (!product) {
-      return res.status(400).json({ success: false });
+      return next(
+        new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
+      );
     }
     res.status(200).json({
       success: true,
       data: {},
     });
-  } catch (error) {
-    res.status(400).json({ success: false });
+  } catch (err) {
+    next(err);
   }
 };
