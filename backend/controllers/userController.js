@@ -9,7 +9,7 @@ const ErrorResponse = require('../utils/errorResponse');
 exports.loginUser = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select('+password');
 
   if (user && (await user.matchPassword(password))) {
     res.status(200).json({
@@ -54,11 +54,11 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
-const getUserProfile = asyncHandler(async (req, res) => {
+exports.getUserProfile = asyncHandler(async (req, res) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
-    res.json({
+    res.status(200).json({
       success: true,
       data: user,
     });
@@ -70,22 +70,37 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
-const updateUserProfile = asyncHandler(async (req, res) => {});
+exports.updateUserProfile = asyncHandler(async (req, res) => {
+  let user = await User.findById(req.user._id);
+
+  if (!user) {
+    return next(new ErrorResponse(`User not found`, 404));
+  }
+
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+  res.status(200).json({ success: true, data: updatedUser });
+});
 
 // @desc    Get all users
 // @route   GET /api/users
 // @access  Private/Admin
-const getUsers = asyncHandler(async (req, res) => {});
+exports.getUsers = asyncHandler(async (req, res) => {
+  const users = await User.find({ isAdmin: false });
+  res.status(200).json({ success: true, data: users });
+});
 
 // @desc    Delete user
 // @route   DELETE /api/users/:id
 // @access  Private/Admin
-const deleteUser = asyncHandler(async (req, res) => {});
+exports.deleteUser = asyncHandler(async (req, res) => {});
 
 // @desc    Get user by ID
 // @route   GET /api/users/:id
 // @access  Private/Admin
-const getUserById = asyncHandler(async (req, res) => {});
+exports.getUserById = asyncHandler(async (req, res) => {});
 
 // @desc    Update user
 // @route   PUT /api/users/:id
