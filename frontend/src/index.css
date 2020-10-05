@@ -2,12 +2,13 @@ main {
   min-height: 80vh;
 }
 
-@media (min-width: 1200px) {
-  .container,
-  .container-sm,
-  .container-md,
-  .container-lg,
-  .container-xl {
-    max-width: 1640px;
-  }
+h4 {
+  padding: 1rem 0;
+}
+.rating span {
+  margin: 0.1rem;
+}
+
+.nav_container {
+  max-width: 1440px;
 }
