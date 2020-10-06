@@ -1,4 +1,4 @@
-ErrorResponse = require('../utils/ErrorResponse');
+const ErrorResponse = require('../utils/ErrorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const Product = require('../models/productModel.js');
 
