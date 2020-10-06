@@ -1,19 +1,35 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import Product from '../components/Product';
-import products from '../products';
+import { productList } from '../actions/productActions';
 
 const HomeScreen = () => {
+  const dispatch = useDispatch();
+
+  const listOfProducts = useSelector((state) => state.productList);
+  const { loading, error, products } = listOfProducts;
+
+  useEffect(() => {
+    dispatch(productList());
+  }, [dispatch]);
+
   return (
     <Fragment>
       <h1>Latest Products</h1>
-      <Row>
-        {products.map((product) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product product={product} />
-          </Col>
-        ))}
-      </Row>
+      {loading ? (
+        <h2>Loading...</h2>
+      ) : error ? (
+        <h3>{error}</h3>
+      ) : (
+        <Row>
+          {products.map((product) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product product={product} />
+            </Col>
+          ))}
+        </Row>
+      )}
     </Fragment>
   );
 };
