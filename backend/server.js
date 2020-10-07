@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
-const errorHandler = require('./middleware/error');
+const { notFound, errorHandler } = require('./middleware/error');
 const connectDB = require('./config/db.js');
 
 //Load env
@@ -29,6 +29,7 @@ app.use('/api/v1/products', productRoutes);
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/orders', orderRoutes);
 
+app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;

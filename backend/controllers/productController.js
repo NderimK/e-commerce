@@ -1,4 +1,3 @@
-const ErrorResponse = require('../utils/ErrorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 const Product = require('../models/productModel.js');
 
@@ -20,9 +19,8 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 exports.getProductById = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 404)
-    );
+    res.status(404);
+    throw new Error('Product not found');
   }
   res.status(200).json({
     success: true,
@@ -52,9 +50,8 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
   });
 
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
-    );
+    res.status(404);
+    throw new Error('Product not found');
   }
   res.status(200).json({
     success: true,
@@ -69,9 +66,8 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
 
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
-    );
+    res.status(404);
+    throw new Error('Product not found');
   }
   res.status(200).json({
     success: true,

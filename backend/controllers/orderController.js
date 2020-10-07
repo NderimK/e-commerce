@@ -1,6 +1,5 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const Order = require('../models/orderModel.js');
-ErrorResponse = require('../utils/ErrorResponse');
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -17,7 +16,8 @@ exports.addOrderItems = asyncHandler(async (req, res, next) => {
   } = req.body;
 
   if (orderItems && orderItems.length === 0) {
-    return next(new ErrorResponse('No order items', 400));
+    res.status(400);
+    throw new Error('No order items');
   } else {
     const order = new Order({
       orderItems,
@@ -54,7 +54,8 @@ exports.getOrderById = asyncHandler(async (req, res, next) => {
       data: order,
     });
   } else {
-    return next(new ErrorResponse('Order not found', 404));
+    res.status(404);
+    throw new Error('Order not found');
   }
 });
 
@@ -81,7 +82,8 @@ exports.updateOrderToPaid = asyncHandler(async (req, res, next) => {
       data: updatedOrder,
     });
   } else {
-    return next(new ErrorResponse('Order not found', 404));
+    res.status(404);
+    throw new Error('Order not found');
   }
 });
 
@@ -102,7 +104,8 @@ exports.updateOrderToDelivered = asyncHandler(async (req, res, next) => {
       data: updatedOrder,
     });
   } else {
-    return next(new ErrorResponse('Order not found', 404));
+    res.status(404);
+    throw new Error('Order not found');
   }
 });
 

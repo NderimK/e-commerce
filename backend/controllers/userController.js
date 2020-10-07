@@ -1,7 +1,6 @@
 const asyncHandler = require('../middleware/asyncHandler');
 const generateToken = require('../utils/generateToken');
 const User = require('../models/userModel.js');
-const ErrorResponse = require('../utils/errorResponse');
 
 // @desc    Auth user & get token
 // @route   GET /api/v1/user/login
@@ -18,7 +17,8 @@ exports.loginUser = asyncHandler(async (req, res, next) => {
       token: generateToken(user._id),
     });
   } else {
-    return next(new ErrorResponse(`Invalid Email or password`, 401));
+    res.status(401);
+    throw new Error('Invalid email or password');
   }
 });
 
@@ -47,7 +47,8 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
       token: generateToken(user._id),
     });
   } else {
-    return next(new ErrorResponse(`Invalid user data`, 400));
+    res.status(400);
+    throw new Error('Invalid user data');
   }
 });
 
@@ -63,7 +64,8 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
       data: user,
     });
   } else {
-    return next(new ErrorResponse(`User not found`, 404));
+    res.status(404);
+    throw new Error('User not found');
   }
 });
 
@@ -74,7 +76,8 @@ exports.updateUserProfile = asyncHandler(async (req, res) => {
   let user = await User.findById(req.user._id);
 
   if (!user) {
-    return next(new ErrorResponse(`User not found`, 404));
+    res.status(404);
+    throw new Error('User not found');
   }
 
   const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
@@ -105,4 +108,4 @@ exports.getUserById = asyncHandler(async (req, res) => {});
 // @desc    Update user
 // @route   PUT /api/users/:id
 // @access  Private/Admin
-const updateUser = asyncHandler(async (req, res) => {});
+exports.updateUser = asyncHandler(async (req, res) => {});
