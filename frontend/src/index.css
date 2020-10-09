@@ -5,9 +5,36 @@ main {
 h4 {
   padding: 1rem 0;
 }
+
+h1 {
+  font-size: 1.8rem;
+  padding: 1rem 0;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+}
+
 .rating span {
   margin: 0.1rem;
 }
+
 .nav_container {
   max-width: 1540px !important;
+}
+
+.col span {
+  justify-content: center;
+}
+
+.col1 {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+}
+
+.qty {
+  display: flex;
+  align-items: center;
 }
