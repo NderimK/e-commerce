@@ -2,7 +2,6 @@ const ErrorResponse = require('../utils/ErrorResponse');
 
 const errorHandler = (err, req, res, next) => {
   let error = { ...err };
-  console.log(err.stack.red);
 
   error.message = err.message;
 
@@ -28,6 +27,7 @@ const errorHandler = (err, req, res, next) => {
     success: false,
     error: error.message || 'Server Error',
   });
+  console.log('BACKEND ERROR2 :', error.message);
 };
 
 module.exports = errorHandler;

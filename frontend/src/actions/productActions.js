@@ -11,23 +11,22 @@ import {
 export const productList = () => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_LIST_REQUEST });
-    const {
-      data: { data },
-    } = await axios.get('/api/v1/products');
+    const { data } = await axios.get('/api/v1/products');
     dispatch({ type: PRODUCT_LIST_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: PRODUCT_LIST_FAIL, payload: error });
+    dispatch({ type: PRODUCT_LIST_FAIL, payload: error.response.data });
   }
 };
 
 export const productDetails = (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAIL_REQUEST });
-    const {
-      data: { data },
-    } = await axios.get(`/api/v1/products/${id}`);
+    const { data } = await axios.get(`/api/v1/products/${id}`);
     dispatch({ type: PRODUCT_DETAIL_SUCCESS, payload: data });
   } catch (error) {
-    dispatch({ type: PRODUCT_DETAIL_FAIL, payload: error });
+    dispatch({
+      type: PRODUCT_DETAIL_FAIL,
+      payload: error.response.data,
+    });
   }
 };

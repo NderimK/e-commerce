@@ -20,9 +20,7 @@ exports.getProducts = asyncHandler(async (req, res, next) => {
 exports.getProductById = asyncHandler(async (req, res, next) => {
   const product = await Product.findById(req.params.id);
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 404)
-    );
+    return next(new ErrorResponse(`Product not found`, 404));
   }
   res.status(200).json({
     success: true,
@@ -52,9 +50,7 @@ exports.updateProduct = asyncHandler(async (req, res, next) => {
   });
 
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
-    );
+    return next(new ErrorResponse(`Product not found`, 400));
   }
   res.status(200).json({
     success: true,
@@ -69,9 +65,7 @@ exports.deleteProduct = asyncHandler(async (req, res, next) => {
   const product = await Product.findByIdAndDelete(req.params.id);
 
   if (!product) {
-    return next(
-      new ErrorResponse(`Product not found with id of ${req.params.id}`, 400)
-    );
+    return next(new ErrorResponse(`Product not found`, 400));
   }
   res.status(200).json({
     success: true,

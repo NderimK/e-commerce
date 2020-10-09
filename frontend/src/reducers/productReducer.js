@@ -15,13 +15,13 @@ export const productListReducer = (state = { products: [] }, action) => {
     case PRODUCT_LIST_SUCCESS:
       return {
         loading: false,
-        products: action.payload,
+        products: action.payload.data,
       };
 
     case PRODUCT_LIST_FAIL:
       return {
         loading: false,
-        error: action.payload,
+        error: action.payload.error,
       };
 
     default:
@@ -40,13 +40,13 @@ export const productDetailReducer = (
     case PRODUCT_DETAIL_SUCCESS:
       return {
         loading: false,
-        product: action.payload,
+        product: action.payload.data,
       };
 
     case PRODUCT_DETAIL_FAIL:
       return {
         loading: false,
-        error: action.payload,
+        error: action.payload.error,
       };
 
     default:
