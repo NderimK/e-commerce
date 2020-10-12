@@ -20,14 +20,18 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors).map((val) => val.message);
-    error = new ErrorResponse(message, 400);
+
+    const newMessage = message.map((m) => {
+      return m.replace('Path', '');
+    });
+
+    error = new ErrorResponse(newMessage, 400);
   }
 
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || 'Server Error',
   });
-  console.log('BACKEND ERROR2 :', error.message);
 };
 
 module.exports = errorHandler;

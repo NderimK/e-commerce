@@ -54,7 +54,7 @@ exports.registerUser = asyncHandler(async (req, res, next) => {
 // @desc    Get user profile
 // @route   GET /api/users/profile
 // @access  Private
-exports.getUserProfile = asyncHandler(async (req, res) => {
+exports.getUserProfile = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user._id);
 
   if (user) {
@@ -70,7 +70,7 @@ exports.getUserProfile = asyncHandler(async (req, res) => {
 // @desc    Update user profile
 // @route   PUT /api/users/profile
 // @access  Private
-exports.updateUserProfile = asyncHandler(async (req, res) => {
+exports.updateUserProfile = asyncHandler(async (req, res, next) => {
   let user = await User.findById(req.user._id);
 
   if (!user) {
