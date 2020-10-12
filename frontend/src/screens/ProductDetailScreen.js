@@ -14,13 +14,15 @@ import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Rating from '../components/Rating';
 import { productDetails } from '../actions/productActions';
+import { addToCart } from '../actions/carActions';
 
-const ProductDetailScreen = ({ history, match }) => {
+const ProductDetailScreen = ({ match }) => {
   const [qty, setQty] = useState(1);
 
   const dispatch = useDispatch();
 
   const productDetail = useSelector((state) => state.productDetails);
+
   const { loading, error, product } = productDetail;
 
   useEffect(() => {
@@ -28,7 +30,8 @@ const ProductDetailScreen = ({ history, match }) => {
   }, [dispatch, match]);
 
   const addToCartHandler = () => {
-    history.push(`/cart/${match.params.id}?qty=${qty}`);
+    console.log(product);
+    dispatch(addToCart(product._id, qty));
   };
 
   return (
@@ -85,8 +88,7 @@ const ProductDetailScreen = ({ history, match }) => {
                 {product.countInStock > 0 && (
                   <ListGroup.Item>
                     <Row>
-                      <Col className='qty'>Qty</Col>
-
+                      <Col className='d-flex align-items-center'>Quantity:</Col>
                       <Col>
                         <Form.Control
                           as='select'
