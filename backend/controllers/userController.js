@@ -73,15 +73,23 @@ exports.getUserProfile = asyncHandler(async (req, res, next) => {
 exports.updateUserProfile = asyncHandler(async (req, res, next) => {
   let user = await User.findById(req.user._id);
 
-  if (!user) {
+  if (user) {
+    user.name = req.body.name || user.name;
+    user.email = req.body.email || user.email;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      success: true,
+      data: updatedUser,
+      token: generateToken(updatedUser._id),
+    });
+  } else {
     return next(new ErrorResponse(`User not found`, 404));
   }
-
-  const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
-    new: true,
-    runValidators: true,
-  });
-  res.status(200).json({ success: true, data: updatedUser });
 });
 
 // @desc    Get all users
