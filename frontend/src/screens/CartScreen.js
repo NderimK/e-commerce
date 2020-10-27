@@ -38,7 +38,7 @@ const CartScreen = ({ match, location, history }) => {
         ) : (
           <ListGroup variant='flush'>
             {cartItems.map((item) => (
-              <ListGroup.Item key={item.id}>
+              <ListGroup.Item key={item.product}>
                 <Row className='d-flex align-items-center'>
                   <Col md={2}>
                     <Image
@@ -50,7 +50,7 @@ const CartScreen = ({ match, location, history }) => {
                   </Col>
 
                   <Col md={3}>
-                    <Link to={`/product/${item.id}`}>{item.name}</Link>
+                    <Link to={`/product/${item.product}`}>{item.name}</Link>
                   </Col>
 
                   <Col md={2}>${item.price}</Col>
@@ -60,7 +60,9 @@ const CartScreen = ({ match, location, history }) => {
                       as='select'
                       value={item.qty}
                       onChange={(e) =>
-                        dispatch(addToCart(item.id, Number(e.target.value)))
+                        dispatch(
+                          addToCart(item.product, Number(e.target.value))
+                        )
                       }
                     >
                       {[...Array(item.countInStock).keys()].map((x) => (
